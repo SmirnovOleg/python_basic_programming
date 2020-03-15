@@ -7,8 +7,16 @@ function draw_table() {
     $.getJSON('http://127.0.0.1:5000/get_all', function (data) {
         $.each(data, function (key, val) {
             let row = "";
+            let name = "";
             $.each(val, function (key, val) {
-                row += '<td>' + val + '</td>';
+                if (key === 'name')
+                    name = val;
+                if (val === null || val === 'null')
+                    val = '?';
+                if (key === 'buy_link')
+                    row += '<td><a href="' + val + '">' + name + '</a></td>';
+                else
+                    row += '<td>' + val + '</td>';
             });
             $('#table_body').append('<tr>' + row + '</tr>');
         });
@@ -18,7 +26,7 @@ function draw_table() {
 
 function processForm(e) {
     if (e.preventDefault) e.preventDefault();
-    let user_info = $('#form').serializeArray().reduce(function (obj, item) {
+    let gpu_info = $('#form').serializeArray().reduce(function (obj, item) {
         obj[item.name] = item.value;
         return obj;
     }, {});
@@ -26,8 +34,8 @@ function processForm(e) {
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
-            url: "http://127.0.0.1:5000/new_user",
-            data: JSON.stringify(user_info),
+            url: "http://127.0.0.1:5000/create_new",
+            data: JSON.stringify(gpu_info),
             dataType: "json",
             success: function (data) {
                 resolve(data);
@@ -41,7 +49,7 @@ function processForm(e) {
     promise.then(function (_) {
         draw_table();
     }).catch(function (err) {
-        console.log("can't add new user: " + err);
+        console.log("Can't add new gpu: " + err);
     })
 
     // request.always(function (data) {

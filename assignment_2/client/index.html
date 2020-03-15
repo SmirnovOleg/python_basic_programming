@@ -9,35 +9,78 @@
 <body>
 
 <div class="container mt-5">
+     <div class="row">
+        <h1>Add new GPU</h1>
+    </div>
+</div>
+<div class="container mt-4">
     <form id="form">
-        <div class="form-group">
-            <label for="inputName">Name</label>
-            <input type="text" class="form-control" id="inputName" name="name"
-                   placeholder="Enter name">
+        <div class="form-group row">
+            <label class="col-sm-1 col-form-label" for="inputName">Name</label>
+            <div class="col-sm-5">
+                <input type="text" class="form-control" id="inputName" name="name"
+                       placeholder="Enter name">
+            </div>
         </div>
-        <div class="form-group">
-            <label for="inputSurname">Surname</label>
-            <input type="text" class="form-control" id="inputSurname" name="surname"
-                   placeholder="Enter surname">
+        <div class="form-group row">
+            <label class="col-sm-1 col-form-label" for="inputScore">Score</label>
+            <div class="col-sm-5">
+                <input type="number" class="form-control" id="inputScore" name="score"
+                       placeholder="Enter score, %">
+            </div>
         </div>
-        <div class="form-group">
-            <label for="inputAge">Age</label>
-            <input type="number" class="form-control" id="inputAge" name="age"
-                   placeholder="Enter age">
+        <div class="form-group row">
+            <label class="col-sm-1 col-form-label" for="inputBoostFreq">Frequency</label>
+            <div class="col-sm-5">
+                <input type="text" class="form-control" id="inputBoostFreq" name="boost_freq"
+                       placeholder="Enter boosted frequency, MHz">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-1 col-form-label" for="inputMemory">Memory</label>
+            <div class="col-sm-5">
+                <input type="text" class="form-control" id="inputMemory" name="memory"
+                       placeholder="Enter memory volume, GB">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-1 col-form-label" for="inputPower">Power</label>
+            <div class="col-sm-5">
+                <input type="text" class="form-control" id="inputPower" name="power"
+                       placeholder="Enter power, W">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="inputCUDA">CUDA cores / Steam processors</label>
+            <div class="col-sm-4">
+                <input type="number" class="form-control" id="inputCUDA" name="cuda_cores"
+                       placeholder="Enter number of cores">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-1 col-form-label" for="inputLink">Link</label>
+            <div class="col-sm-5">
+                <input type="text" class="form-control" id="inputLink" name="buy_link"
+                       placeholder="Enter link">
+            </div>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
 
 <div class="container-fluid mt-5">
-    <table class="table table-hover">
+    <table class="table table-striped">
         <thead class="thead-dark">
-        <tr>
-            <th scope="col">Id</th>
-            <th scope="col">Name</th>
-            <th scope="col">Surname</th>
-            <th scope="col">Age</th>
-        </tr>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Name</th>
+                <th scope="col">Score</th>
+                <th scope="col">Boost</th>
+                <th scope="col">Memory</th>
+                <th scope="col">Power</th>
+                <th scope="col">Cores</th>
+                <th scope="col">Link</th>
+            </tr>
         </thead>
         <tbody id="table_body">
         </tbody>
