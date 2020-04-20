@@ -24,8 +24,7 @@ def init_db():
         cursor = db.cursor()
         cursor.executescript(
             '''CREATE TABLE IF NOT EXISTS GraphicUnits (
-                   id INTEGER PRIMARY KEY,
-                   name TEXT NOT NULL,
+                   name TEXT PRIMARY KEY,
                    score FLOAT,
                    boost_freq TEXT NOT NULL,
                    memory TEXT NOT NULL,
@@ -38,7 +37,7 @@ def init_db():
         db.commit()
 
 
-def add_item_to_db(data):
+def add_item_to_db(data, cursor):
     name = data.get('name', 'null')
     score = data.get('score', 'null')
     boost_freq = data.get('boost_freq', 'null')
@@ -46,21 +45,21 @@ def add_item_to_db(data):
     power = data.get('power', 'null')
     cuda_cores = data.get('cuda_cores', 'null')
     buy_link = data.get('buy_link', 'null')
+    query = f"INSERT INTO GraphicUnits (name, score, boost_freq, memory, power, cuda_cores, buy_link) " \
+            f"VALUES ('{name}', {score}, '{boost_freq}', '{memory}', '{power}', {cuda_cores}, '{buy_link}') " \
+            f"ON CONFLICT (name) DO UPDATE SET cuda_cores={cuda_cores}"
+    cursor.execute(query)
+
+
+def update_initial_content():
     with app.app_context():
-        query = f"INSERT INTO GraphicUnits (name, score, boost_freq, memory, power, cuda_cores, buy_link) \
-                  VALUES ('{name}', {score}, '{boost_freq}', '{memory}', '{power}', {cuda_cores}, '{buy_link}');"
         db_conn = get_db()
-        db_conn.execute(query)
+        cursor = db_conn.cursor()
+        for item in parse_tomshardware_website():
+            add_item_to_db(item, cursor)
+        for item in parse_pcgamer_website():
+            add_item_to_db(item, cursor)
         db_conn.commit()
-        db_conn.close()
-        return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
-
-
-def add_initial_content():
-    for item in parse_tomshardware_website():
-        add_item_to_db(item)
-    for item in parse_pcgamer_website():
-        add_item_to_db(item)
 
 
 @app.route('/get_all')
@@ -90,6 +89,5 @@ def close_connection(exception):
 
 if __name__ == '__main__':
     init_db()
-    if len(json.loads(get_all())) == 0:
-        add_initial_content()
+    update_initial_content()
     app.run()
